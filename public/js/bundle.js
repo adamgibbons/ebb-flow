@@ -1,4 +1,28 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/gibber/sandbox/lowtide/app.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/gibber/sandbox/lowtide/actions/action-creators.js":[function(require,module,exports){
+var ActionTypes = require('../constants/action-types');
+var Dispatcher = require('../dispatcher/dispatcher');
+
+// var TideApi = require('../utils/some-api');
+
+module.exports = {
+  getNextPrediction: function() {
+    Dispatcher.handleViewAction({
+      type: ActionTypes.GET_NEXT_PREDICTION
+    });
+  },
+
+  getPreviousPrediction: function() {
+    Dispatcher.handleViewAction({
+      type: ActionTypes.GET_PREVIOUS_PREDICTION
+    });
+  }
+};
+
+// TODO: create dispatcher
+
+},{"../constants/action-types":"/Users/gibber/sandbox/lowtide/constants/action-types.js","../dispatcher/dispatcher":"/Users/gibber/sandbox/lowtide/dispatcher/dispatcher.js"}],"/Users/gibber/sandbox/lowtide/app.js":[function(require,module,exports){
+require('./utils/object-assign');
+
 var React = require('react');
 // var TweetsApp = require('./components/TweetsApp');
 var Application = require('./components/application');
@@ -10,12 +34,27 @@ var Application = require('./components/application');
 React.render( React.createElement(Application, null), document.getElementById('react-app') );
 
 
-},{"./components/application":"/Users/gibber/sandbox/lowtide/components/application.js","react":"/Users/gibber/sandbox/lowtide/node_modules/react/react.js"}],"/Users/gibber/sandbox/lowtide/components/application.js":[function(require,module,exports){
+},{"./components/application":"/Users/gibber/sandbox/lowtide/components/application.js","./utils/object-assign":"/Users/gibber/sandbox/lowtide/utils/object-assign.js","react":"/Users/gibber/sandbox/lowtide/node_modules/react/react.js"}],"/Users/gibber/sandbox/lowtide/components/application.js":[function(require,module,exports){
 var React = require('react/addons');
 var EventEmitter = require('events').EventEmitter;
+var ActionCreators = require('../actions/action-creators');
+
+var ApplicationStore = require('../stores/application-store');
+var ListenToStore = require('../utils/listen-to-store');
+
 var ee = new EventEmitter();
 
 var Application = React.createClass({displayName: "Application",
+
+  mixins: [ListenToStore],
+
+  stores: [ApplicationStore],
+
+  getStateFromStore: function() {
+    this.setState({
+      idx: ApplicationStore.getPredictionIndex()
+    });
+  },
 
   getInitialState: function(props) {
     props = props || this.props;
@@ -35,18 +74,7 @@ var Application = React.createClass({displayName: "Application",
     this.props.predictions = predictionsData;
   },
 
-  componentDidMount: function() {
-    var self = this;
-
-    ee.on('requested-next-prediction', function(e) {
-      self.setState({idx: self.state.idx + 1});
-    });
-  },
-
   render: function() {
-    console.log("render called");
-    // console.log("state is now " + this.state.idx);
-
     return (
       React.createElement("div", null, 
         React.createElement("h5", null, "Santa Cruz, California"), 
@@ -59,21 +87,8 @@ var Application = React.createClass({displayName: "Application",
 
 var PredictionsList = React.createClass({displayName: "PredictionsList",
 
-  // isActivePrediction: function() {
-
-  //     // console.log(predictionsData.indexOf(p));
-  //     // console.log(self.props);
-
-
-  //     console.log(this);
-  //     return true;
-  
-  // },
-
-// self.currentPrediction === predictionsData.indexOf(p)
-  
-
   render: function() {
+
     var self = this;
     var predictions = this.props.predictions.map(function (p, idx) {
       return React.createElement(Prediction, {level: p.level, time: p.time, isActive: idx === self.props.currentPrediction});
@@ -84,6 +99,7 @@ var PredictionsList = React.createClass({displayName: "PredictionsList",
 });
 
 var Prediction = React.createClass({displayName: "Prediction",
+
   render: function() {
 
     var classes = React.addons.classSet({
@@ -100,14 +116,19 @@ var Prediction = React.createClass({displayName: "Prediction",
 });
 
 var NavigationMenu = React.createClass({displayName: "NavigationMenu",
+
+  getPreviousPrediction: function() {
+    ActionCreators.getPreviousPrediction();
+  },
+
   getNextPrediction: function() {
-    ee.emit('requested-next-prediction');
+    ActionCreators.getNextPrediction();
   },
 
   render: function() {
     return (
       React.createElement("nav", {className: "navigation-menu"}, 
-        React.createElement("button", {className: "btn"}, "Previous"), 
+        React.createElement("button", {className: "btn", onClick: this.getPreviousPrediction}, "Previous"), 
         React.createElement("button", {className: "btn", onClick: this.getNextPrediction}, "Next")
       )
     );
@@ -123,7 +144,70 @@ var predictionsData = [
 
 module.exports = Application;
 
-},{"events":"/Users/gibber/sandbox/lowtide/node_modules/browserify/node_modules/events/events.js","react/addons":"/Users/gibber/sandbox/lowtide/node_modules/react/addons.js"}],"/Users/gibber/sandbox/lowtide/node_modules/browserify/node_modules/events/events.js":[function(require,module,exports){
+},{"../actions/action-creators":"/Users/gibber/sandbox/lowtide/actions/action-creators.js","../stores/application-store":"/Users/gibber/sandbox/lowtide/stores/application-store.js","../utils/listen-to-store":"/Users/gibber/sandbox/lowtide/utils/listen-to-store.js","events":"/Users/gibber/sandbox/lowtide/node_modules/browserify/node_modules/events/events.js","react/addons":"/Users/gibber/sandbox/lowtide/node_modules/react/addons.js"}],"/Users/gibber/sandbox/lowtide/constants/action-types.js":[function(require,module,exports){
+var keyMirror = require('react/lib/keyMirror');
+
+module.exports = keyMirror({
+  GET_NEXT_PREDICTION: null,
+  GET_PREVIOUS_PREDICTION: null
+});
+
+},{"react/lib/keyMirror":"/Users/gibber/sandbox/lowtide/node_modules/react/lib/keyMirror.js"}],"/Users/gibber/sandbox/lowtide/constants/payload-sources.js":[function(require,module,exports){
+var keyMirror = require('react/lib/keyMirror');
+
+module.exports = keyMirror({
+  SERVER_ACTION: null,
+  VIEW_ACTION: null
+});
+
+
+},{"react/lib/keyMirror":"/Users/gibber/sandbox/lowtide/node_modules/react/lib/keyMirror.js"}],"/Users/gibber/sandbox/lowtide/dispatcher/dispatcher.js":[function(require,module,exports){
+var Dispatcher = require('flux').Dispatcher;
+
+var PayloadSources = require('../constants/payload-sources');
+
+var TideDispatcher = Object.assign(new Dispatcher(), {
+
+  /**
+   * @param {object} action The details of the action, including the action's
+   * type and additional data coming from the server.
+   */
+  handleServerAction: function(action) {
+    console.log('server action', action);
+
+    if(!action.type) {
+      throw new Error('Empty action.type: you likely mistyped the action.');
+    }
+
+    this.dispatch({
+      source: PayloadSources.SERVER_ACTION,
+      action: action
+    });
+  },
+
+  /**
+   * @param {object} action The details of the action, including the action's
+   * type and additional data coming from the view.
+   */
+  handleViewAction: function(action) {
+    console.log('view action', action);
+
+    if(!action.type) {
+      throw new Error('Empty action.type: you likely mistyped the action.');
+    }
+
+    this.dispatch({
+      source: PayloadSources.VIEW_ACTION,
+      action: action
+    });
+  }
+
+});
+
+module.exports = TideDispatcher;
+
+
+},{"../constants/payload-sources":"/Users/gibber/sandbox/lowtide/constants/payload-sources.js","flux":"/Users/gibber/sandbox/lowtide/node_modules/flux/index.js"}],"/Users/gibber/sandbox/lowtide/node_modules/browserify/node_modules/events/events.js":[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -484,6 +568,353 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
+
+},{}],"/Users/gibber/sandbox/lowtide/node_modules/flux/index.js":[function(require,module,exports){
+/**
+ * Copyright (c) 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+
+module.exports.Dispatcher = require('./lib/Dispatcher')
+
+},{"./lib/Dispatcher":"/Users/gibber/sandbox/lowtide/node_modules/flux/lib/Dispatcher.js"}],"/Users/gibber/sandbox/lowtide/node_modules/flux/lib/Dispatcher.js":[function(require,module,exports){
+/*
+ * Copyright (c) 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule Dispatcher
+ * @typechecks
+ */
+
+"use strict";
+
+var invariant = require('./invariant');
+
+var _lastID = 1;
+var _prefix = 'ID_';
+
+/**
+ * Dispatcher is used to broadcast payloads to registered callbacks. This is
+ * different from generic pub-sub systems in two ways:
+ *
+ *   1) Callbacks are not subscribed to particular events. Every payload is
+ *      dispatched to every registered callback.
+ *   2) Callbacks can be deferred in whole or part until other callbacks have
+ *      been executed.
+ *
+ * For example, consider this hypothetical flight destination form, which
+ * selects a default city when a country is selected:
+ *
+ *   var flightDispatcher = new Dispatcher();
+ *
+ *   // Keeps track of which country is selected
+ *   var CountryStore = {country: null};
+ *
+ *   // Keeps track of which city is selected
+ *   var CityStore = {city: null};
+ *
+ *   // Keeps track of the base flight price of the selected city
+ *   var FlightPriceStore = {price: null}
+ *
+ * When a user changes the selected city, we dispatch the payload:
+ *
+ *   flightDispatcher.dispatch({
+ *     actionType: 'city-update',
+ *     selectedCity: 'paris'
+ *   });
+ *
+ * This payload is digested by `CityStore`:
+ *
+ *   flightDispatcher.register(function(payload) {
+ *     if (payload.actionType === 'city-update') {
+ *       CityStore.city = payload.selectedCity;
+ *     }
+ *   });
+ *
+ * When the user selects a country, we dispatch the payload:
+ *
+ *   flightDispatcher.dispatch({
+ *     actionType: 'country-update',
+ *     selectedCountry: 'australia'
+ *   });
+ *
+ * This payload is digested by both stores:
+ *
+ *    CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
+ *     if (payload.actionType === 'country-update') {
+ *       CountryStore.country = payload.selectedCountry;
+ *     }
+ *   });
+ *
+ * When the callback to update `CountryStore` is registered, we save a reference
+ * to the returned token. Using this token with `waitFor()`, we can guarantee
+ * that `CountryStore` is updated before the callback that updates `CityStore`
+ * needs to query its data.
+ *
+ *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
+ *     if (payload.actionType === 'country-update') {
+ *       // `CountryStore.country` may not be updated.
+ *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
+ *       // `CountryStore.country` is now guaranteed to be updated.
+ *
+ *       // Select the default city for the new country
+ *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
+ *     }
+ *   });
+ *
+ * The usage of `waitFor()` can be chained, for example:
+ *
+ *   FlightPriceStore.dispatchToken =
+ *     flightDispatcher.register(function(payload) {
+ *       switch (payload.actionType) {
+ *         case 'country-update':
+ *           flightDispatcher.waitFor([CityStore.dispatchToken]);
+ *           FlightPriceStore.price =
+ *             getFlightPriceStore(CountryStore.country, CityStore.city);
+ *           break;
+ *
+ *         case 'city-update':
+ *           FlightPriceStore.price =
+ *             FlightPriceStore(CountryStore.country, CityStore.city);
+ *           break;
+ *     }
+ *   });
+ *
+ * The `country-update` payload will be guaranteed to invoke the stores'
+ * registered callbacks in order: `CountryStore`, `CityStore`, then
+ * `FlightPriceStore`.
+ */
+
+  function Dispatcher() {
+    this.$Dispatcher_callbacks = {};
+    this.$Dispatcher_isPending = {};
+    this.$Dispatcher_isHandled = {};
+    this.$Dispatcher_isDispatching = false;
+    this.$Dispatcher_pendingPayload = null;
+  }
+
+  /**
+   * Registers a callback to be invoked with every dispatched payload. Returns
+   * a token that can be used with `waitFor()`.
+   *
+   * @param {function} callback
+   * @return {string}
+   */
+  Dispatcher.prototype.register=function(callback) {
+    var id = _prefix + _lastID++;
+    this.$Dispatcher_callbacks[id] = callback;
+    return id;
+  };
+
+  /**
+   * Removes a callback based on its token.
+   *
+   * @param {string} id
+   */
+  Dispatcher.prototype.unregister=function(id) {
+    invariant(
+      this.$Dispatcher_callbacks[id],
+      'Dispatcher.unregister(...): `%s` does not map to a registered callback.',
+      id
+    );
+    delete this.$Dispatcher_callbacks[id];
+  };
+
+  /**
+   * Waits for the callbacks specified to be invoked before continuing execution
+   * of the current callback. This method should only be used by a callback in
+   * response to a dispatched payload.
+   *
+   * @param {array<string>} ids
+   */
+  Dispatcher.prototype.waitFor=function(ids) {
+    invariant(
+      this.$Dispatcher_isDispatching,
+      'Dispatcher.waitFor(...): Must be invoked while dispatching.'
+    );
+    for (var ii = 0; ii < ids.length; ii++) {
+      var id = ids[ii];
+      if (this.$Dispatcher_isPending[id]) {
+        invariant(
+          this.$Dispatcher_isHandled[id],
+          'Dispatcher.waitFor(...): Circular dependency detected while ' +
+          'waiting for `%s`.',
+          id
+        );
+        continue;
+      }
+      invariant(
+        this.$Dispatcher_callbacks[id],
+        'Dispatcher.waitFor(...): `%s` does not map to a registered callback.',
+        id
+      );
+      this.$Dispatcher_invokeCallback(id);
+    }
+  };
+
+  /**
+   * Dispatches a payload to all registered callbacks.
+   *
+   * @param {object} payload
+   */
+  Dispatcher.prototype.dispatch=function(payload) {
+    invariant(
+      !this.$Dispatcher_isDispatching,
+      'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.'
+    );
+    this.$Dispatcher_startDispatching(payload);
+    try {
+      for (var id in this.$Dispatcher_callbacks) {
+        if (this.$Dispatcher_isPending[id]) {
+          continue;
+        }
+        this.$Dispatcher_invokeCallback(id);
+      }
+    } finally {
+      this.$Dispatcher_stopDispatching();
+    }
+  };
+
+  /**
+   * Is this Dispatcher currently dispatching.
+   *
+   * @return {boolean}
+   */
+  Dispatcher.prototype.isDispatching=function() {
+    return this.$Dispatcher_isDispatching;
+  };
+
+  /**
+   * Call the callback stored with the given id. Also do some internal
+   * bookkeeping.
+   *
+   * @param {string} id
+   * @internal
+   */
+  Dispatcher.prototype.$Dispatcher_invokeCallback=function(id) {
+    this.$Dispatcher_isPending[id] = true;
+    this.$Dispatcher_callbacks[id](this.$Dispatcher_pendingPayload);
+    this.$Dispatcher_isHandled[id] = true;
+  };
+
+  /**
+   * Set up bookkeeping needed when dispatching.
+   *
+   * @param {object} payload
+   * @internal
+   */
+  Dispatcher.prototype.$Dispatcher_startDispatching=function(payload) {
+    for (var id in this.$Dispatcher_callbacks) {
+      this.$Dispatcher_isPending[id] = false;
+      this.$Dispatcher_isHandled[id] = false;
+    }
+    this.$Dispatcher_pendingPayload = payload;
+    this.$Dispatcher_isDispatching = true;
+  };
+
+  /**
+   * Clear bookkeeping used for dispatching.
+   *
+   * @internal
+   */
+  Dispatcher.prototype.$Dispatcher_stopDispatching=function() {
+    this.$Dispatcher_pendingPayload = null;
+    this.$Dispatcher_isDispatching = false;
+  };
+
+
+module.exports = Dispatcher;
+
+},{"./invariant":"/Users/gibber/sandbox/lowtide/node_modules/flux/lib/invariant.js"}],"/Users/gibber/sandbox/lowtide/node_modules/flux/lib/invariant.js":[function(require,module,exports){
+/**
+ * Copyright (c) 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule invariant
+ */
+
+"use strict";
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var invariant = function(condition, format, a, b, c, d, e, f) {
+  if (false) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  }
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error(
+        'Minified exception occurred; use the non-minified dev environment ' +
+        'for the full error message and additional helpful warnings.'
+      );
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(
+        'Invariant Violation: ' +
+        format.replace(/%s/g, function() { return args[argIndex++]; })
+      );
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+};
+
+module.exports = invariant;
+
+},{}],"/Users/gibber/sandbox/lowtide/node_modules/object-assign/index.js":[function(require,module,exports){
+'use strict';
+
+function ToObject(val) {
+	if (val == null) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+module.exports = Object.assign || function (target, source) {
+	var from;
+	var keys;
+	var to = ToObject(target);
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = arguments[s];
+		keys = Object.keys(Object(from));
+
+		for (var i = 0; i < keys.length; i++) {
+			to[keys[i]] = from[keys[i]];
+		}
+	}
+
+	return to;
+};
 
 },{}],"/Users/gibber/sandbox/lowtide/node_modules/react/addons.js":[function(require,module,exports){
 module.exports = require('./lib/ReactWithAddons');
@@ -20432,4 +20863,123 @@ module.exports = warning;
 },{"./emptyFunction":"/Users/gibber/sandbox/lowtide/node_modules/react/lib/emptyFunction.js","_process":"/Users/gibber/sandbox/lowtide/node_modules/browserify/node_modules/process/browser.js"}],"/Users/gibber/sandbox/lowtide/node_modules/react/react.js":[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":"/Users/gibber/sandbox/lowtide/node_modules/react/lib/React.js"}]},{},["/Users/gibber/sandbox/lowtide/app.js"]);
+},{"./lib/React":"/Users/gibber/sandbox/lowtide/node_modules/react/lib/React.js"}],"/Users/gibber/sandbox/lowtide/stores/application-store.js":[function(require,module,exports){
+var Dispatcher = require('../dispatcher/dispatcher');
+var EventEmitter = require('events').EventEmitter;
+var ActionTypes = require('../constants/action-types');
+
+var createStore = require('../utils/create-store');
+
+var _predictionIndex = 0;
+
+function _getPredictionIndex() {
+  return _predictionIndex;
+}
+
+function _incrementPredictionIndex() {
+  return _predictionIndex += 1;
+}
+
+function _decrementPredictionIndex() {
+  return _predictionIndex -= 1;
+}
+
+ApplicationStore = createStore({
+  getPredictionIndex: function() {
+    return _predictionIndex;
+  }
+});
+
+ApplicationStore.dispatchToken = Dispatcher.register(function (payload) {
+  var action = payload.action;
+
+  switch(action.type) {
+    case ActionTypes.GET_NEXT_PREDICTION:
+      _incrementPredictionIndex();
+      ApplicationStore.emitChange();
+      break;
+
+    case ActionTypes.GET_PREVIOUS_PREDICTION:
+      _decrementPredictionIndex();
+      ApplicationStore.emitChange();
+      break;
+
+    default:
+      // do nothing
+  }
+});
+
+module.exports = ApplicationStore;
+
+  //   ee.on('requested-previous-prediction', function(e) {
+  //     self.setState({idx: self.state.idx - 1});
+  //   });
+
+  //   ee.on('requested-next-prediction', function(e) {
+  //     self.setState({idx: self.state.idx + 1});
+  //   });
+
+},{"../constants/action-types":"/Users/gibber/sandbox/lowtide/constants/action-types.js","../dispatcher/dispatcher":"/Users/gibber/sandbox/lowtide/dispatcher/dispatcher.js","../utils/create-store":"/Users/gibber/sandbox/lowtide/utils/create-store.js","events":"/Users/gibber/sandbox/lowtide/node_modules/browserify/node_modules/events/events.js"}],"/Users/gibber/sandbox/lowtide/utils/create-store.js":[function(require,module,exports){
+var EventEmitter = require('events').EventEmitter;
+
+var CHANGE_EVENT = 'change';
+
+function createStore(spec) {
+  var store = Object.assign(EventEmitter.prototype, Object.assign(spec, {
+    emitChange: function() {
+      this.emit(CHANGE_EVENT);
+    },
+
+    addChangeListener: function(callback) {
+      this.on(CHANGE_EVENT, callback);
+    },
+
+    removeChangeListener: function(callback) {
+      this.removeListener(CHANGE_EVENT, callback);
+    }
+  }));
+
+  Object.keys(store).forEach(function(key) {
+    var val = store[key];
+    if(typeof val === 'function') {
+      store[key] = store[key].bind(store);
+    }
+  });
+
+  store.setMaxListeners(0);
+  return store;
+}
+
+module.exports = createStore;
+
+
+},{"events":"/Users/gibber/sandbox/lowtide/node_modules/browserify/node_modules/events/events.js"}],"/Users/gibber/sandbox/lowtide/utils/listen-to-store.js":[function(require,module,exports){
+var ListenToStore = {
+  componentDidMount: function() {
+    this.stores.forEach(function(store) {
+      store.addChangeListener(this._onChange);
+    }, this);
+    this.getStateFromStore();
+  },
+
+  componentWillUnmount: function() {
+    this.stores.forEach(function(store) {
+      store.removeChangeListener(this._onChange);
+    }, this);
+  },
+
+  _onChange: function() {
+    this.getStateFromStore();
+  }
+};
+
+module.exports = ListenToStore;
+
+
+},{}],"/Users/gibber/sandbox/lowtide/utils/object-assign.js":[function(require,module,exports){
+if(!Object.assign) {
+  Object.assign = require('object-assign');
+}
+
+
+},{"object-assign":"/Users/gibber/sandbox/lowtide/node_modules/object-assign/index.js"}]},{},["/Users/gibber/sandbox/lowtide/app.js"]);
