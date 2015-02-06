@@ -1,3 +1,5 @@
+require('./utils/object-assign');
+
 var React = require('react');
 // var TweetsApp = require('./components/TweetsApp');
 var Application = require('./components/application');

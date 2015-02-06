@@ -1,8 +1,23 @@
 var React = require('react/addons');
 var EventEmitter = require('events').EventEmitter;
+var ActionCreators = require('../actions/action-creators');
+
+var ApplicationStore = require('../stores/application-store');
+var ListenToStore = require('../utils/listen-to-store');
+
 var ee = new EventEmitter();
 
 var Application = React.createClass({
+
+  mixins: [ListenToStore],
+
+  stores: [ApplicationStore],
+
+  getStateFromStore: function() {
+    this.setState({
+      idx: ApplicationStore.getPredictionIndex()
+    });
+  },
 
   getInitialState: function(props) {
     props = props || this.props;
@@ -22,22 +37,7 @@ var Application = React.createClass({
     this.props.predictions = predictionsData;
   },
 
-  componentDidMount: function() {
-    var self = this;
-
-    ee.on('requested-previous-prediction', function(e) {
-      self.setState({idx: self.state.idx - 1});
-    });
-
-    ee.on('requested-next-prediction', function(e) {
-      self.setState({idx: self.state.idx + 1});
-    });
-  },
-
   render: function() {
-    console.log("render called");
-    // console.log("state is now " + this.state.idx);
-
     return (
       <div>
         <h5>Santa Cruz, California</h5>
@@ -49,7 +49,9 @@ var Application = React.createClass({
 });
 
 var PredictionsList = React.createClass({
+
   render: function() {
+
     var self = this;
     var predictions = this.props.predictions.map(function (p, idx) {
       return <Prediction level={p.level} time={p.time} isActive={idx === self.props.currentPrediction} />;
@@ -60,6 +62,7 @@ var PredictionsList = React.createClass({
 });
 
 var Prediction = React.createClass({
+
   render: function() {
 
     var classes = React.addons.classSet({
@@ -76,12 +79,13 @@ var Prediction = React.createClass({
 });
 
 var NavigationMenu = React.createClass({
+
   getPreviousPrediction: function() {
-    ee.emit('requested-previous-prediction');
+    ActionCreators.getPreviousPrediction();
   },
 
   getNextPrediction: function() {
-    ee.emit('requested-next-prediction');
+    ActionCreators.getNextPrediction();
   },
 
   render: function() {
