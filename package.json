@@ -4,28 +4,33 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "gulp build",
-    "clean": "gulp clean",
-    "serve": "PORT=8000 live-server dist"
+    "watch": "watchify app.js -o public/js/bundle.js -v",
+    "browserify": "browserify app.js | uglifyjs > public/js/bundle.js",
+    "build": "npm run browserify ",
+    "start": "npm run watch & nodemon server.js"
   },
-  "author": "",
+  "author": "Adam Gibbons",
   "license": "ISC",
   "devDependencies": {
-    "bower": "^1.3.12",
-    "gulp": "^3.8.10",
-    "gulp-clean": "^0.3.1",
-    "gulp-less": "^2.0.1",
-    "gulp-webpack": "^1.1.2",
-    "jsx-loader": "^0.12.2",
-    "live-server": "^0.6.3",
-    "webpack": "^1.4.15"
+    "browserify": "^8.1.3",
+    "nodemon": "^1.3.6",
+    "reactify": "^1.0.0",
+    "uglify-js": "^2.4.16",
+    "watchify": "^2.3.0"
   },
   "dependencies": {
-    "flux": "^2.0.1",
-    "object-assign": "^2.0.0",
+    "express": "^4.11.2",
+    "express-handlebars": "^1.1.0",
+    "jade": "^1.9.1",
+    "mongoose": "^3.8.22",
+    "node-jsx": "^0.12.4",
+    "ntwitter": "^0.5.0",
     "react": "^0.12.2",
-    "react-swiper": "^0.1.4",
-    "request": "^2.51.0",
-    "superagent": "^0.21.0"
+    "socket.io": "^1.3.3"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
   }
 }
