@@ -25,6 +25,10 @@ var Application = React.createClass({
   componentDidMount: function() {
     var self = this;
 
+    ee.on('requested-previous-prediction', function(e) {
+      self.setState({idx: self.state.idx - 1});
+    });
+
     ee.on('requested-next-prediction', function(e) {
       self.setState({idx: self.state.idx + 1});
     });
@@ -45,21 +49,6 @@ var Application = React.createClass({
 });
 
 var PredictionsList = React.createClass({
-
-  // isActivePrediction: function() {
-
-  //     // console.log(predictionsData.indexOf(p));
-  //     // console.log(self.props);
-
-
-  //     console.log(this);
-  //     return true;
-  
-  // },
-
-// self.currentPrediction === predictionsData.indexOf(p)
-  
-
   render: function() {
     var self = this;
     var predictions = this.props.predictions.map(function (p, idx) {
@@ -87,6 +76,10 @@ var Prediction = React.createClass({
 });
 
 var NavigationMenu = React.createClass({
+  getPreviousPrediction: function() {
+    ee.emit('requested-previous-prediction');
+  },
+
   getNextPrediction: function() {
     ee.emit('requested-next-prediction');
   },
@@ -94,7 +87,7 @@ var NavigationMenu = React.createClass({
   render: function() {
     return (
       <nav className="navigation-menu">
-        <button className="btn">Previous</button>
+        <button className="btn" onClick={this.getPreviousPrediction}>Previous</button>
         <button className="btn" onClick={this.getNextPrediction}>Next</button>
       </nav>
     );
