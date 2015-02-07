@@ -8,8 +8,6 @@ var config = require('./config');
 var app = express();
 var port = process.env.port || 8000;
 
-mongoose.connect('mongodb://localhost/lowtide');
-
 app.set('view engine', 'jade');
 
 app.get('/', routes.index);

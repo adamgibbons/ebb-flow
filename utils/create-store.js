@@ -1,9 +1,12 @@
+var _ = require('underscore');
+
 var EventEmitter = require('events').EventEmitter;
 
 var CHANGE_EVENT = 'change';
 
 function createStore(spec) {
-  var store = Object.assign(EventEmitter.prototype, Object.assign(spec, {
+
+  var store = _.extend({}, EventEmitter.prototype, spec, {
     emitChange: function() {
       this.emit(CHANGE_EVENT);
     },
@@ -15,7 +18,7 @@ function createStore(spec) {
     removeChangeListener: function(callback) {
       this.removeListener(CHANGE_EVENT, callback);
     }
-  }));
+  });
 
   Object.keys(store).forEach(function(key) {
     var val = store[key];

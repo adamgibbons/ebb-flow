@@ -28,7 +28,7 @@
     "ntwitter": "^0.5.0",
     "object-assign": "^2.0.0",
     "react": "^0.12.2",
-    "socket.io": "^1.3.3"
+    "underscore": "^1.7.0"
   },
   "browserify": {
     "transform": [

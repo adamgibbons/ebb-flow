@@ -1,5 +1,3 @@
-require('./utils/object-assign');
-
 var React = require('react');
 var Application = require('./components/application');
 

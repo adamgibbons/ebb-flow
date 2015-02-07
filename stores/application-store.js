@@ -18,7 +18,7 @@ function _decrementPredictionIndex() {
   return _predictionIndex -= 1;
 }
 
-ApplicationStore = createStore({
+var ApplicationStore = createStore({
   getPredictionIndex: function() {
     return _predictionIndex;
   }
@@ -44,11 +44,3 @@ ApplicationStore.dispatchToken = Dispatcher.register(function (payload) {
 });
 
 module.exports = ApplicationStore;
-
-  //   ee.on('requested-previous-prediction', function(e) {
-  //     self.setState({idx: self.state.idx - 1});
-  //   });
-
-  //   ee.on('requested-next-prediction', function(e) {
-  //     self.setState({idx: self.state.idx + 1});
-  //   });
