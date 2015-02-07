@@ -1,17 +1,19 @@
 var React = require('react');
-var EventEmitter = require('events').EventEmitter;
-
-var ee = new EventEmitter();
+var ActionCreators = require('../actions/action-creators');
 
 var NavigationMenu = React.createClass({
+  getPreviousPrediction: function() {
+    ActionCreators.getPreviousPrediction();
+  },
+
   getNextPrediction: function() {
-    ee.emit('requested-next-prediction');
+    ActionCreators.getNextPrediction();
   },
 
   render: function() {
     return (
       <nav className="navigation-menu">
-        <button className="btn">Previous</button>
+        <button className="btn" onClick={this.getPreviousPrediction}>Previous</button>
         <button className="btn" onClick={this.getNextPrediction}>Next</button>
       </nav>
     );

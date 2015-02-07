@@ -33,6 +33,9 @@ var ActionCreators = require('../actions/action-creators');
 var ApplicationStore = require('../stores/application-store');
 var ListenToStore = require('../utils/listen-to-store');
 
+var NavigationMenu = require('./navigation-menu');
+var PredictionsList = require('./predictions-list');
+
 var Application = React.createClass({displayName: "Application",
 
   mixins: [ListenToStore],
@@ -74,6 +77,45 @@ var Application = React.createClass({displayName: "Application",
   }
 });
 
+var predictionsData = [
+  {level: 1.5, time: '2:30am'},
+  {level: 2.2, time: '2:30pm'},
+  {level: 0.3, time: '3:28am'},
+  {level: -.7, time: '3:14pm'}
+];
+
+module.exports = Application;
+
+},{"../actions/action-creators":"/Users/gibber/sandbox/lowtide/actions/action-creators.js","../stores/application-store":"/Users/gibber/sandbox/lowtide/stores/application-store.js","../utils/listen-to-store":"/Users/gibber/sandbox/lowtide/utils/listen-to-store.js","./navigation-menu":"/Users/gibber/sandbox/lowtide/components/navigation-menu.js","./predictions-list":"/Users/gibber/sandbox/lowtide/components/predictions-list.js","react/addons":"/Users/gibber/sandbox/lowtide/node_modules/react/addons.js"}],"/Users/gibber/sandbox/lowtide/components/navigation-menu.js":[function(require,module,exports){
+var React = require('react');
+var ActionCreators = require('../actions/action-creators');
+
+var NavigationMenu = React.createClass({displayName: "NavigationMenu",
+  getPreviousPrediction: function() {
+    ActionCreators.getPreviousPrediction();
+  },
+
+  getNextPrediction: function() {
+    ActionCreators.getNextPrediction();
+  },
+
+  render: function() {
+    return (
+      React.createElement("nav", {className: "navigation-menu"}, 
+        React.createElement("button", {className: "btn", onClick: this.getPreviousPrediction}, "Previous"), 
+        React.createElement("button", {className: "btn", onClick: this.getNextPrediction}, "Next")
+      )
+    );
+  }
+});
+
+module.exports = NavigationMenu;
+
+},{"../actions/action-creators":"/Users/gibber/sandbox/lowtide/actions/action-creators.js","react":"/Users/gibber/sandbox/lowtide/node_modules/react/react.js"}],"/Users/gibber/sandbox/lowtide/components/predictions-list.js":[function(require,module,exports){
+var React = require('react');
+
+var ActionCreators = require('../actions/action-creators');
+
 var PredictionsList = React.createClass({displayName: "PredictionsList",
   render: function() {
     var self = this;
@@ -101,35 +143,9 @@ var Prediction = React.createClass({displayName: "Prediction",
   }
 });
 
-var NavigationMenu = React.createClass({displayName: "NavigationMenu",
-  getPreviousPrediction: function() {
-    ActionCreators.getPreviousPrediction();
-  },
+module.exports = PredictionsList;
 
-  getNextPrediction: function() {
-    ActionCreators.getNextPrediction();
-  },
-
-  render: function() {
-    return (
-      React.createElement("nav", {className: "navigation-menu"}, 
-        React.createElement("button", {className: "btn", onClick: this.getPreviousPrediction}, "Previous"), 
-        React.createElement("button", {className: "btn", onClick: this.getNextPrediction}, "Next")
-      )
-    );
-  }
-});
-
-var predictionsData = [
-  {level: 1.5, time: '2:30am'},
-  {level: 2.2, time: '2:30pm'},
-  {level: 0.3, time: '3:28am'},
-  {level: -.7, time: '3:14pm'}
-];
-
-module.exports = Application;
-
-},{"../actions/action-creators":"/Users/gibber/sandbox/lowtide/actions/action-creators.js","../stores/application-store":"/Users/gibber/sandbox/lowtide/stores/application-store.js","../utils/listen-to-store":"/Users/gibber/sandbox/lowtide/utils/listen-to-store.js","react/addons":"/Users/gibber/sandbox/lowtide/node_modules/react/addons.js"}],"/Users/gibber/sandbox/lowtide/constants/action-types.js":[function(require,module,exports){
+},{"../actions/action-creators":"/Users/gibber/sandbox/lowtide/actions/action-creators.js","react":"/Users/gibber/sandbox/lowtide/node_modules/react/react.js"}],"/Users/gibber/sandbox/lowtide/constants/action-types.js":[function(require,module,exports){
 var keyMirror = require('react/lib/keyMirror');
 
 module.exports = keyMirror({

@@ -4,6 +4,9 @@ var ActionCreators = require('../actions/action-creators');
 var ApplicationStore = require('../stores/application-store');
 var ListenToStore = require('../utils/listen-to-store');
 
+var NavigationMenu = require('./navigation-menu');
+var PredictionsList = require('./predictions-list');
+
 var Application = React.createClass({
 
   mixins: [ListenToStore],
@@ -41,52 +44,6 @@ var Application = React.createClass({
         <PredictionsList {...this.props} currentPrediction={this.state.idx}/>
         <NavigationMenu/>
       </div>
-    );
-  }
-});
-
-var PredictionsList = React.createClass({
-  render: function() {
-    var self = this;
-
-    var predictions = this.props.predictions.map(function (p, idx) {
-      return <Prediction level={p.level} time={p.time} isActive={idx === self.props.currentPrediction} />;
-    });
-
-    return <div className="prediction-list">{predictions}</div>;
-  }
-});
-
-var Prediction = React.createClass({
-  render: function() {
-    var classes = React.addons.classSet({
-      'prediction': true,
-      'active': this.props.isActive
-    });
-
-    return (
-      <div className={classes}>
-        <p>{this.props.level} ft at {this.props.time}</p>
-      </div>
-    );
-  }
-});
-
-var NavigationMenu = React.createClass({
-  getPreviousPrediction: function() {
-    ActionCreators.getPreviousPrediction();
-  },
-
-  getNextPrediction: function() {
-    ActionCreators.getNextPrediction();
-  },
-
-  render: function() {
-    return (
-      <nav className="navigation-menu">
-        <button className="btn" onClick={this.getPreviousPrediction}>Previous</button>
-        <button className="btn" onClick={this.getNextPrediction}>Next</button>
-      </nav>
     );
   }
 });
