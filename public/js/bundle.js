@@ -18,31 +18,22 @@ module.exports = {
   }
 };
 
-// TODO: create dispatcher
 
 },{"../constants/action-types":"/Users/gibber/sandbox/lowtide/constants/action-types.js","../dispatcher/dispatcher":"/Users/gibber/sandbox/lowtide/dispatcher/dispatcher.js"}],"/Users/gibber/sandbox/lowtide/app.js":[function(require,module,exports){
 require('./utils/object-assign');
 
 var React = require('react');
-// var TweetsApp = require('./components/TweetsApp');
 var Application = require('./components/application');
-
-// var initialState = JSON.parse(document.getElementById('initial-state').innerHTML);
-
-// React.render( <TweetsApp/>, document.getElementById('react-app') );
 
 React.render( React.createElement(Application, null), document.getElementById('react-app') );
 
 
 },{"./components/application":"/Users/gibber/sandbox/lowtide/components/application.js","./utils/object-assign":"/Users/gibber/sandbox/lowtide/utils/object-assign.js","react":"/Users/gibber/sandbox/lowtide/node_modules/react/react.js"}],"/Users/gibber/sandbox/lowtide/components/application.js":[function(require,module,exports){
 var React = require('react/addons');
-var EventEmitter = require('events').EventEmitter;
-var ActionCreators = require('../actions/action-creators');
 
+var ActionCreators = require('../actions/action-creators');
 var ApplicationStore = require('../stores/application-store');
 var ListenToStore = require('../utils/listen-to-store');
-
-var ee = new EventEmitter();
 
 var Application = React.createClass({displayName: "Application",
 
@@ -86,10 +77,9 @@ var Application = React.createClass({displayName: "Application",
 });
 
 var PredictionsList = React.createClass({displayName: "PredictionsList",
-
   render: function() {
-
     var self = this;
+
     var predictions = this.props.predictions.map(function (p, idx) {
       return React.createElement(Prediction, {level: p.level, time: p.time, isActive: idx === self.props.currentPrediction});
     });
@@ -99,9 +89,7 @@ var PredictionsList = React.createClass({displayName: "PredictionsList",
 });
 
 var Prediction = React.createClass({displayName: "Prediction",
-
   render: function() {
-
     var classes = React.addons.classSet({
       'prediction': true,
       'active': this.props.isActive
@@ -116,7 +104,6 @@ var Prediction = React.createClass({displayName: "Prediction",
 });
 
 var NavigationMenu = React.createClass({displayName: "NavigationMenu",
-
   getPreviousPrediction: function() {
     ActionCreators.getPreviousPrediction();
   },
@@ -144,7 +131,7 @@ var predictionsData = [
 
 module.exports = Application;
 
-},{"../actions/action-creators":"/Users/gibber/sandbox/lowtide/actions/action-creators.js","../stores/application-store":"/Users/gibber/sandbox/lowtide/stores/application-store.js","../utils/listen-to-store":"/Users/gibber/sandbox/lowtide/utils/listen-to-store.js","events":"/Users/gibber/sandbox/lowtide/node_modules/browserify/node_modules/events/events.js","react/addons":"/Users/gibber/sandbox/lowtide/node_modules/react/addons.js"}],"/Users/gibber/sandbox/lowtide/constants/action-types.js":[function(require,module,exports){
+},{"../actions/action-creators":"/Users/gibber/sandbox/lowtide/actions/action-creators.js","../stores/application-store":"/Users/gibber/sandbox/lowtide/stores/application-store.js","../utils/listen-to-store":"/Users/gibber/sandbox/lowtide/utils/listen-to-store.js","react/addons":"/Users/gibber/sandbox/lowtide/node_modules/react/addons.js"}],"/Users/gibber/sandbox/lowtide/constants/action-types.js":[function(require,module,exports){
 var keyMirror = require('react/lib/keyMirror');
 
 module.exports = keyMirror({

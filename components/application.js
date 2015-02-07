@@ -1,11 +1,8 @@
 var React = require('react/addons');
-var EventEmitter = require('events').EventEmitter;
-var ActionCreators = require('../actions/action-creators');
 
+var ActionCreators = require('../actions/action-creators');
 var ApplicationStore = require('../stores/application-store');
 var ListenToStore = require('../utils/listen-to-store');
-
-var ee = new EventEmitter();
 
 var Application = React.createClass({
 
@@ -49,10 +46,9 @@ var Application = React.createClass({
 });
 
 var PredictionsList = React.createClass({
-
   render: function() {
-
     var self = this;
+
     var predictions = this.props.predictions.map(function (p, idx) {
       return <Prediction level={p.level} time={p.time} isActive={idx === self.props.currentPrediction} />;
     });
@@ -62,9 +58,7 @@ var PredictionsList = React.createClass({
 });
 
 var Prediction = React.createClass({
-
   render: function() {
-
     var classes = React.addons.classSet({
       'prediction': true,
       'active': this.props.isActive
@@ -79,7 +73,6 @@ var Prediction = React.createClass({
 });
 
 var NavigationMenu = React.createClass({
-
   getPreviousPrediction: function() {
     ActionCreators.getPreviousPrediction();
   },
