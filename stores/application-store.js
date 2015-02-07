@@ -5,9 +5,10 @@ var ActionTypes = require('../constants/action-types');
 var createStore = require('../utils/create-store');
 
 var _predictionIndex = 0;
+var _predictions = [];
 
-function _getPredictionIndex() {
-  return _predictionIndex;
+function _loadPredictions(predictions) {
+  _predictions = predictions;
 }
 
 function _incrementPredictionIndex() {
@@ -21,6 +22,10 @@ function _decrementPredictionIndex() {
 var ApplicationStore = createStore({
   getPredictionIndex: function() {
     return _predictionIndex;
+  },
+
+  getPredictions: function() {
+    return _predictions;
   }
 });
 
@@ -35,6 +40,11 @@ ApplicationStore.dispatchToken = Dispatcher.register(function (payload) {
 
     case ActionTypes.GET_PREVIOUS_PREDICTION:
       _decrementPredictionIndex();
+      ApplicationStore.emitChange();
+      break;
+
+    case ActionTypes.RECEIVE_TIDE_PREDICTIONS:
+      _loadPredictions(action.predictions);
       ApplicationStore.emitChange();
       break;
 

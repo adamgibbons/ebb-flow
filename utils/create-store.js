@@ -1,5 +1,4 @@
 var _ = require('underscore');
-
 var EventEmitter = require('events').EventEmitter;
 
 var CHANGE_EVENT = 'change';

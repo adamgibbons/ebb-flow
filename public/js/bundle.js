@@ -2,9 +2,10 @@
 var ActionTypes = require('../constants/action-types');
 var Dispatcher = require('../dispatcher/dispatcher');
 
-// var TideApi = require('../utils/some-api');
+var TidesApi = require('../utils/tides-api');
 
 module.exports = {
+
   getNextPrediction: function() {
     Dispatcher.handleViewAction({
       type: ActionTypes.GET_NEXT_PREDICTION
@@ -15,11 +16,23 @@ module.exports = {
     Dispatcher.handleViewAction({
       type: ActionTypes.GET_PREVIOUS_PREDICTION
     });
+  },
+
+  requestTidePredictions: function() {
+    TidesApi.requestTidePredictions();
+  },
+
+  receiveTidePredictions: function(data) {
+    Dispatcher.handleServerAction({
+      type: ActionTypes.RECEIVE_TIDE_PREDICTIONS,
+      predictions: data
+    });
   }
+
 };
 
 
-},{"../constants/action-types":"/Users/gibber/sandbox/lowtide/constants/action-types.js","../dispatcher/dispatcher":"/Users/gibber/sandbox/lowtide/dispatcher/dispatcher.js"}],"/Users/gibber/sandbox/lowtide/app.js":[function(require,module,exports){
+},{"../constants/action-types":"/Users/gibber/sandbox/lowtide/constants/action-types.js","../dispatcher/dispatcher":"/Users/gibber/sandbox/lowtide/dispatcher/dispatcher.js","../utils/tides-api":"/Users/gibber/sandbox/lowtide/utils/tides-api.js"}],"/Users/gibber/sandbox/lowtide/app.js":[function(require,module,exports){
 var React = require('react');
 var Application = require('./components/application');
 
@@ -32,7 +45,6 @@ var React = require('react/addons');
 var ActionCreators = require('../actions/action-creators');
 var ApplicationStore = require('../stores/application-store');
 var ListenToStore = require('../utils/listen-to-store');
-
 var NavigationMenu = require('./navigation-menu');
 var PredictionsList = require('./predictions-list');
 
@@ -44,47 +56,36 @@ var Application = React.createClass({displayName: "Application",
 
   getStateFromStore: function() {
     this.setState({
-      idx: ApplicationStore.getPredictionIndex()
+      idx: ApplicationStore.getPredictionIndex(),
+      predictions: ApplicationStore.getPredictions()
     });
   },
 
-  getInitialState: function(props) {
-    props = props || this.props;
-
+  getInitialState: function() {
     return {
-      predictions: props.predictions,
+      predictions: [],
       idx: 0
     };
   },
 
-  componentWillReceiveProps: function (newProps, oldProps) {
-    this.setState(this.getInitialState(newProps));
-  },
-
   componentWillMount: function() {
-    // call api for predictions
-    this.props.predictions = predictionsData;
+    ActionCreators.requestTidePredictions();
   },
 
   render: function() {
+
     return (
       React.createElement("div", null, 
         React.createElement("h5", null, "Santa Cruz, California"), 
-        React.createElement(PredictionsList, React.__spread({},  this.props, {currentPrediction: this.state.idx})), 
+        React.createElement(PredictionsList, {currentPrediction: this.state.idx, predictions: this.state.predictions}), 
         React.createElement(NavigationMenu, null)
       )
     );
   }
 });
 
-var predictionsData = [
-  {level: 1.5, time: '2:30am'},
-  {level: 2.2, time: '2:30pm'},
-  {level: 0.3, time: '3:28am'},
-  {level: -.7, time: '3:14pm'}
-];
-
 module.exports = Application;
+
 
 },{"../actions/action-creators":"/Users/gibber/sandbox/lowtide/actions/action-creators.js","../stores/application-store":"/Users/gibber/sandbox/lowtide/stores/application-store.js","../utils/listen-to-store":"/Users/gibber/sandbox/lowtide/utils/listen-to-store.js","./navigation-menu":"/Users/gibber/sandbox/lowtide/components/navigation-menu.js","./predictions-list":"/Users/gibber/sandbox/lowtide/components/predictions-list.js","react/addons":"/Users/gibber/sandbox/lowtide/node_modules/react/addons.js"}],"/Users/gibber/sandbox/lowtide/components/navigation-menu.js":[function(require,module,exports){
 var React = require('react');
@@ -150,7 +151,8 @@ var keyMirror = require('react/lib/keyMirror');
 
 module.exports = keyMirror({
   GET_NEXT_PREDICTION: null,
-  GET_PREVIOUS_PREDICTION: null
+  GET_PREVIOUS_PREDICTION: null,
+  RECEIVE_TIDE_PREDICTIONS: null
 });
 
 },{"react/lib/keyMirror":"/Users/gibber/sandbox/lowtide/node_modules/react/lib/keyMirror.js"}],"/Users/gibber/sandbox/lowtide/constants/payload-sources.js":[function(require,module,exports){
@@ -22251,9 +22253,10 @@ var ActionTypes = require('../constants/action-types');
 var createStore = require('../utils/create-store');
 
 var _predictionIndex = 0;
+var _predictions = [];
 
-function _getPredictionIndex() {
-  return _predictionIndex;
+function _loadPredictions(predictions) {
+  _predictions = predictions;
 }
 
 function _incrementPredictionIndex() {
@@ -22267,6 +22270,10 @@ function _decrementPredictionIndex() {
 var ApplicationStore = createStore({
   getPredictionIndex: function() {
     return _predictionIndex;
+  },
+
+  getPredictions: function() {
+    return _predictions;
   }
 });
 
@@ -22284,6 +22291,11 @@ ApplicationStore.dispatchToken = Dispatcher.register(function (payload) {
       ApplicationStore.emitChange();
       break;
 
+    case ActionTypes.RECEIVE_TIDE_PREDICTIONS:
+      _loadPredictions(action.predictions);
+      ApplicationStore.emitChange();
+      break;
+
     default:
       // do nothing
   }
@@ -22294,7 +22306,6 @@ module.exports = ApplicationStore;
 
 },{"../constants/action-types":"/Users/gibber/sandbox/lowtide/constants/action-types.js","../dispatcher/dispatcher":"/Users/gibber/sandbox/lowtide/dispatcher/dispatcher.js","../utils/create-store":"/Users/gibber/sandbox/lowtide/utils/create-store.js","events":"/Users/gibber/sandbox/lowtide/node_modules/browserify/node_modules/events/events.js"}],"/Users/gibber/sandbox/lowtide/utils/create-store.js":[function(require,module,exports){
 var _ = require('underscore');
-
 var EventEmitter = require('events').EventEmitter;
 
 var CHANGE_EVENT = 'change';
@@ -22352,4 +22363,23 @@ var ListenToStore = {
 module.exports = ListenToStore;
 
 
-},{}]},{},["/Users/gibber/sandbox/lowtide/app.js"]);
+},{}],"/Users/gibber/sandbox/lowtide/utils/mock-data.json":[function(require,module,exports){
+module.exports=[
+  {"level": 1.5, "time": "2:30am"},
+  {"level": 2.2, "time": "2:30pm"},
+  {"level": 0.3, "time": "3:28am"},
+  {"level": -0.7, "time": "3:14pm"}
+]
+},{}],"/Users/gibber/sandbox/lowtide/utils/tides-api.js":[function(require,module,exports){
+var mockData = require('../utils/mock-data.json');
+
+module.exports = {
+  requestTidePredictions: function() {
+    // do some api handwaving...
+    require('../actions/action-creators').receiveTidePredictions(mockData);
+  }
+};
+
+
+
+},{"../actions/action-creators":"/Users/gibber/sandbox/lowtide/actions/action-creators.js","../utils/mock-data.json":"/Users/gibber/sandbox/lowtide/utils/mock-data.json"}]},{},["/Users/gibber/sandbox/lowtide/app.js"]);
