@@ -1,31 +1,24 @@
 {
   "name": "lowtide",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "gulp build",
-    "clean": "gulp clean",
-    "serve": "PORT=8000 live-server dist"
+    "watch": "webpack --progress --colors --watch",
+    "serve": "python -m SimpleHTTPServer 8888"
   },
-  "author": "",
+  "author": "Adam Gibbons",
   "license": "ISC",
-  "devDependencies": {
-    "bower": "^1.3.12",
-    "gulp": "^3.8.10",
-    "gulp-clean": "^0.3.1",
-    "gulp-less": "^2.0.1",
-    "gulp-webpack": "^1.1.2",
-    "jsx-loader": "^0.12.2",
-    "live-server": "^0.6.3",
-    "webpack": "^1.4.15"
-  },
   "dependencies": {
     "flux": "^2.0.1",
     "object-assign": "^2.0.0",
     "react": "^0.12.2",
-    "react-swiper": "^0.1.4",
-    "request": "^2.51.0",
-    "superagent": "^0.21.0"
+    "react-router": "^0.12.0",
+    "superagent": "^0.21.0",
+    "underscore": "^1.7.0"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.12.2",
+    "webpack": "^1.5.3"
   }
 }

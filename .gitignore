@@ -1,4 +1,4 @@
 .DS_Store
-bower_components/
+config.js
 node_modules/
-dist/
+app/config/ham-weather.js

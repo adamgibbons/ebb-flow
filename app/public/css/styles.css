@@ -1,0 +1,37 @@
+body {
+  background-color: #999;
+  font-size: 18px;
+  text-align: center;
+}
+
+.prediction-list {
+  width: 20em;
+  margin: auto;
+  font-family: sans-serif;
+  font-size: .8em;
+}
+
+.prediction {
+  padding: 1em;
+  border: 1px solid #666;
+  margin-bottom: 1em;
+  background-color: #aaa;
+
+/*  display:none;*/
+}
+
+.prediction.active {
+  display: block;
+  background-color: #ccc;
+}
+
+.btn {
+  font-size: 1em;
+  padding: .5em;
+  border: 1px solid #666;
+  cursor: pointer;
+}
+
+.navigation-menu button:first-child {
+  margin-right: 1em;
+}
