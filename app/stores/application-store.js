@@ -6,9 +6,11 @@ var createStore = require('../utils/create-store');
 
 var _predictionIndex = 0;
 var _predictions = [];
+var _loaded = false;
 
 function _loadPredictions(predictions) {
   _predictions = predictions;
+  _loaded = true;
 }
 
 function _incrementPredictionIndex() {
@@ -26,6 +28,10 @@ var ApplicationStore = createStore({
 
   getPredictions: function() {
     return _predictions;
+  },
+
+  isLoaded: function() {
+    return _loaded;
   }
 });
 

@@ -1,4 +1,4 @@
 .DS_Store
 config.js
 node_modules/
-config/ham-weather.js
+app/config/ham-weather.js

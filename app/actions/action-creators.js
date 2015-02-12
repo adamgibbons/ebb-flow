@@ -17,14 +17,14 @@ module.exports = {
     });
   },
 
-  requestTidePredictions: function() {
-    TidesApi.requestTidePredictions();
+  requestTidePredictions: function(zip) {
+    TidesApi.requestTidePredictions(zip);
   },
 
-  receiveTidePredictions: function(data) {
+  receiveTidePredictions: function(predictions) {
     Dispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_TIDE_PREDICTIONS,
-      predictions: data
+      predictions: predictions
     });
   }
 
