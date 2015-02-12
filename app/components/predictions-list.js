@@ -1,4 +1,5 @@
 var React = require('react/addons');
+var UnixTimestamp = require('unix-timestamp');
 
 var ActionCreators = require('../actions/action-creators');
 
@@ -36,8 +37,9 @@ var PeriodsList = React.createClass({
 
     if (this.state.isLoaded) {
       var periods = this.state.predictions[0].periods.map(function (p, idx) {
+
         return (
-          <Period type={p.type} level={p.heightFT} time={p.timestamp} isActive={self.isActiveItem(idx)} />
+          <Period type={p.type} level={p.heightFT} timestamp={p.timestamp} isActive={self.isActiveItem(idx)} />
         );
       });
 
@@ -52,6 +54,11 @@ var PeriodsList = React.createClass({
 });
 
 var Period = React.createClass({
+
+  formatTimestamp: function(timestamp) {
+    return UnixTimestamp.toDate(timestamp).toString();
+  },
+
   render: function() {
     var classes = React.addons.classSet({
       'prediction': true,
@@ -60,7 +67,7 @@ var Period = React.createClass({
 
     return (
       <div className={classes}>
-        <p>{this.props.type} tide measuring {this.props.level} ft at {this.props.time}</p>
+        <p>{this.props.type} tide measuring {this.props.level} ft at {this.formatTimestamp(this.props.timestamp)}</p>
       </div>
     );
   }

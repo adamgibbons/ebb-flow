@@ -16,8 +16,6 @@ body {
   border: 1px solid #666;
   margin-bottom: 1em;
   background-color: #aaa;
-
-/*  display:none;*/
 }
 
 .prediction.active {
