@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 
 var ActionCreators = require('../actions/action-creators');
 
@@ -14,15 +14,21 @@ var PeriodsList = React.createClass({
   getInitialState: function() {
     return {
       isLoaded: false,
-      predictions: []
+      predictions: [],
+      currentPredictionIdx: 0
     };
   },
 
   getStateFromStore: function() {
     this.setState({
       isLoaded: ApplicationStore.isLoaded(),
-      predictions: ApplicationStore.getPredictions()
+      predictions: ApplicationStore.getPredictions(),
+      currentPrediction: ApplicationStore.getPredictionIndex()
     });
+  },
+
+  isActiveItem: function(idx) {
+    return idx === this.state.currentPrediction;
   },
 
   render: function() {
@@ -31,7 +37,7 @@ var PeriodsList = React.createClass({
     if (this.state.isLoaded) {
       var periods = this.state.predictions[0].periods.map(function (p, idx) {
         return (
-          <Period type={p.type} level={p.heightFT} time={p.timestamp} isActive={idx === self.state.currentPrediction} />
+          <Period type={p.type} level={p.heightFT} time={p.timestamp} isActive={self.isActiveItem(idx)} />
         );
       });
 
