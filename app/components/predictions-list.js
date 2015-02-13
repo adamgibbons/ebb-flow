@@ -1,10 +1,11 @@
 var React = require('react/addons');
-var UnixTimestamp = require('unix-timestamp');
 
 var ActionCreators = require('../actions/action-creators');
 
 var ApplicationStore = require('../stores/application-store');
 var ListenToStore = require('../utils/listen-to-store');
+
+var Period = require('./period');
 
 var PeriodsList = React.createClass({
 
@@ -49,33 +50,6 @@ var PeriodsList = React.createClass({
 
       return <p>Loading...</p>;      
     }
-  }
-});
-
-var Period = React.createClass({
-  render: function() {
-    var classes = React.addons.classSet({
-      'prediction': true,
-      'active': this.props.isActive
-    });
-
-    return (
-      <div className={classes}>
-        <p>
-          {this.props.type} tide measuring {this.props.level} ft at <Timestamp seconds={this.props.timestamp}/>
-        </p>
-      </div>
-    );
-  }
-});
-
-var Timestamp = React.createClass({
-  formatTimestamp: function(timestamp) {
-    return UnixTimestamp.toDate(timestamp).toString();
-  },
-
-  render: function() {
-    return <span>{this.formatTimestamp(this.props.seconds)}</span>;
   }
 });
 
