@@ -7,7 +7,8 @@ var CLIENT_SECRET = config.CLIENT_SECRET;
 
 function _formatUrl(zip) {
   var url = BASE_URL + String(zip);
-  url += '?client_id=' + CLIENT_ID;
+  url += '?to=+1week';
+  url += '&client_id=' + CLIENT_ID;
   url += '&client_secret=' + CLIENT_SECRET;
 
   return url;

@@ -15,7 +15,11 @@ var Period = React.createClass({
     return (
       <div className={classes}>
         <p>
-          <Tide type={this.props.type}/> measuring {this.props.level} ft at <Timestamp seconds={this.props.timestamp}/>
+          <Tide type={this.props.type}/>
+          <br/>
+          {this.props.level} ft
+          <br/>
+          <Timestamp seconds={this.props.timestamp}/>
         </p>
       </div>
     );

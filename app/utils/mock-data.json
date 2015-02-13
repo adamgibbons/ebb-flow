@@ -1,6 +1,220 @@
-[
-  {"level": 1.5, "time": "2:30am"},
-  {"level": 2.2, "time": "2:30pm"},
-  {"level": 0.3, "time": "3:28am"},
-  {"level": -0.7, "time": "3:14pm"}
+{
+"success": true,
+"error": null,
+"response": [
+{
+"id": "8594900",
+"loc": {
+"long": -77.021666666667,
+"lat": 38.87333
+},
+"place": {
+"name": "washington",
+"state": "dc",
+"country": "us"
+},
+"periods": [
+{
+"timestamp": 1423834980,
+"dateTimeISO": "2015-02-13T08:43:00-05:00",
+"type": "l",
+"heightFT": 0,
+"heightM": 0
+},
+{
+"timestamp": 1423855620,
+"dateTimeISO": "2015-02-13T14:27:00-05:00",
+"type": "h",
+"heightFT": 2.7,
+"heightM": 0.82
+},
+{
+"timestamp": 1423882680,
+"dateTimeISO": "2015-02-13T21:58:00-05:00",
+"type": "l",
+"heightFT": 0.2,
+"heightM": 0.06
+},
+{
+"timestamp": 1423901820,
+"dateTimeISO": "2015-02-14T03:17:00-05:00",
+"type": "h",
+"heightFT": 2.4,
+"heightM": 0.73
+},
+{
+"timestamp": 1423925280,
+"dateTimeISO": "2015-02-14T09:48:00-05:00",
+"type": "l",
+"heightFT": 0,
+"heightM": 0
+},
+{
+"timestamp": 1423945800,
+"dateTimeISO": "2015-02-14T15:30:00-05:00",
+"type": "h",
+"heightFT": 2.8,
+"heightM": 0.85
+},
+{
+"timestamp": 1423973160,
+"dateTimeISO": "2015-02-14T23:06:00-05:00",
+"type": "l",
+"heightFT": 0.1,
+"heightM": 0.03
+},
+{
+"timestamp": 1423991940,
+"dateTimeISO": "2015-02-15T04:19:00-05:00",
+"type": "h",
+"heightFT": 2.5,
+"heightM": 0.76
+},
+{
+"timestamp": 1424016060,
+"dateTimeISO": "2015-02-15T11:01:00-05:00",
+"type": "l",
+"heightFT": 0,
+"heightM": 0
+},
+{
+"timestamp": 1424036040,
+"dateTimeISO": "2015-02-15T16:34:00-05:00",
+"type": "h",
+"heightFT": 2.8,
+"heightM": 0.85
+},
+{
+"timestamp": 1424063340,
+"dateTimeISO": "2015-02-16T00:09:00-05:00",
+"type": "l",
+"heightFT": 0,
+"heightM": 0
+},
+{
+"timestamp": 1424081880,
+"dateTimeISO": "2015-02-16T05:18:00-05:00",
+"type": "h",
+"heightFT": 2.6,
+"heightM": 0.79
+},
+{
+"timestamp": 1424106660,
+"dateTimeISO": "2015-02-16T12:11:00-05:00",
+"type": "l",
+"heightFT": -0.1,
+"heightM": -0.03
+},
+{
+"timestamp": 1424126160,
+"dateTimeISO": "2015-02-16T17:36:00-05:00",
+"type": "h",
+"heightFT": 2.9,
+"heightM": 0.88
+},
+{
+"timestamp": 1424153100,
+"dateTimeISO": "2015-02-17T01:05:00-05:00",
+"type": "l",
+"heightFT": -0.1,
+"heightM": -0.03
+},
+{
+"timestamp": 1424171580,
+"dateTimeISO": "2015-02-17T06:13:00-05:00",
+"type": "h",
+"heightFT": 2.7,
+"heightM": 0.82
+},
+{
+"timestamp": 1424196900,
+"dateTimeISO": "2015-02-17T13:15:00-05:00",
+"type": "l",
+"heightFT": -0.2,
+"heightM": -0.06
+},
+{
+"timestamp": 1424215980,
+"dateTimeISO": "2015-02-17T18:33:00-05:00",
+"type": "h",
+"heightFT": 3,
+"heightM": 0.91
+},
+{
+"timestamp": 1424242680,
+"dateTimeISO": "2015-02-18T01:58:00-05:00",
+"type": "l",
+"heightFT": -0.3,
+"heightM": -0.09
+},
+{
+"timestamp": 1424261160,
+"dateTimeISO": "2015-02-18T07:06:00-05:00",
+"type": "h",
+"heightFT": 2.9,
+"heightM": 0.88
+},
+{
+"timestamp": 1424286780,
+"dateTimeISO": "2015-02-18T14:13:00-05:00",
+"type": "l",
+"heightFT": -0.3,
+"heightM": -0.09
+},
+{
+"timestamp": 1424305680,
+"dateTimeISO": "2015-02-18T19:28:00-05:00",
+"type": "h",
+"heightFT": 3.1,
+"heightM": 0.94
+},
+{
+"timestamp": 1424332140,
+"dateTimeISO": "2015-02-19T02:49:00-05:00",
+"type": "l",
+"heightFT": -0.4,
+"heightM": -0.12
+},
+{
+"timestamp": 1424350620,
+"dateTimeISO": "2015-02-19T07:57:00-05:00",
+"type": "h",
+"heightFT": 3,
+"heightM": 0.91
+},
+{
+"timestamp": 1424376540,
+"dateTimeISO": "2015-02-19T15:09:00-05:00",
+"type": "l",
+"heightFT": -0.4,
+"heightM": -0.12
+},
+{
+"timestamp": 1424395260,
+"dateTimeISO": "2015-02-19T20:21:00-05:00",
+"type": "h",
+"heightFT": 3.1,
+"heightM": 0.94
+},
+{
+"timestamp": 1424421420,
+"dateTimeISO": "2015-02-20T03:37:00-05:00",
+"type": "l",
+"heightFT": -0.4,
+"heightM": -0.12
+}
+],
+"profile": {
+"tz": "America/New_York"
+},
+"relativeTo": {
+"lat": 38.963203,
+"long": -77.065176,
+"bearing": 159,
+"bearingENG": "SSE",
+"distanceKM": 10.679,
+"distanceMI": 6.636
+}
+}
 ]
+}

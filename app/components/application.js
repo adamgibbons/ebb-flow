@@ -11,8 +11,8 @@ var Application = React.createClass({
 
   render: function() {
     return (
-      <div>
-        <h5>Santa Cruz, California</h5>
+      <div className="app-wrapper">
+        <h1>ebb ~ flow</h1>
         <PredictionsList/>
         <NavigationMenu/>
       </div>

@@ -7,7 +7,9 @@ var Timestamp = React.createClass({
   },
 
   render: function() {
-    return <span>{this.formatTimestamp(this.props.seconds)}</span>;
+    var classes = 'prediction-component timestamp';
+
+    return <span className={classes}>{this.formatTimestamp(this.props.seconds)}</span>;
   }
 });
 

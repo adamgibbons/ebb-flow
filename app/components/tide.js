@@ -6,7 +6,8 @@ var Tide = React.createClass({
   },
 
   render: function() {
-    return (<span>{this.formatType(this.props.type)}</span>);
+    var classes='prediction-component tide';
+    return (<span className={classes}>{this.formatType(this.props.type)}</span>);
   }
 });
 

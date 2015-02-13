@@ -4,7 +4,6 @@ var Dispatcher = require('../dispatcher/dispatcher');
 var TidesApi = require('../utils/tides-api');
 
 module.exports = {
-
   getNextPrediction: function() {
     Dispatcher.handleViewAction({
       type: ActionTypes.GET_NEXT_PREDICTION
@@ -27,5 +26,4 @@ module.exports = {
       predictions: predictions
     });
   }
-
 };
