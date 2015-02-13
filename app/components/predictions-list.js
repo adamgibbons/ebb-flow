@@ -50,15 +50,9 @@ var PeriodsList = React.createClass({
       return <p>Loading...</p>;      
     }
   }
-
 });
 
 var Period = React.createClass({
-
-  formatTimestamp: function(timestamp) {
-    return UnixTimestamp.toDate(timestamp).toString();
-  },
-
   render: function() {
     var classes = React.addons.classSet({
       'prediction': true,
@@ -67,9 +61,21 @@ var Period = React.createClass({
 
     return (
       <div className={classes}>
-        <p>{this.props.type} tide measuring {this.props.level} ft at {this.formatTimestamp(this.props.timestamp)}</p>
+        <p>
+          {this.props.type} tide measuring {this.props.level} ft at <Timestamp seconds={this.props.timestamp}/>
+        </p>
       </div>
     );
+  }
+});
+
+var Timestamp = React.createClass({
+  formatTimestamp: function(timestamp) {
+    return UnixTimestamp.toDate(timestamp).toString();
+  },
+
+  render: function() {
+    return <span>{this.formatTimestamp(this.props.seconds)}</span>;
   }
 });
 
