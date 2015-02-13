@@ -36,7 +36,17 @@ h1 {
   display: block;
 }
 
+.prediction-component {
 
+}
+
+.prediction-component.tide {
+
+}
+
+.prediction-component.timestamp {
+
+}
 
 .btn {
   font-size: 1em;

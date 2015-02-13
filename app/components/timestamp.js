@@ -1,15 +1,30 @@
 var React = require('react');
-var UnixTimestamp = require('unix-timestamp');
+var Moment = require('moment');
 
 var Timestamp = React.createClass({
-  formatTimestamp: function(timestamp) {
-    return UnixTimestamp.toDate(timestamp).toString();
+  // formatTimestamp: function(unixTimestamp) {
+  //   return Moment.unix(unixTimestamp).format("h:mm a on ddd, MMM Do");
+  // },
+
+  formatDate: function(unixTimestamp) {
+    return Moment.unix(unixTimestamp).format("ddd, MMM Do");
+  },
+
+  formatTime: function(unixTimestamp) {
+    return Moment.unix(unixTimestamp).format("h:mm a");
   },
 
   render: function() {
     var classes = 'prediction-component timestamp';
 
-    return <span className={classes}>{this.formatTimestamp(this.props.seconds)}</span>;
+    return (
+      <span className={classes}>
+        {this.formatTime(this.props.seconds)}
+        <br/>
+        {this.formatDate(this.props.seconds)}
+      </span>
+    );
+
   }
 });
 
