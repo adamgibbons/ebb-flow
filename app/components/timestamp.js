@@ -2,10 +2,6 @@ var React = require('react');
 var Moment = require('moment');
 
 var Timestamp = React.createClass({
-  // formatTimestamp: function(unixTimestamp) {
-  //   return Moment.unix(unixTimestamp).format("h:mm a on ddd, MMM Do");
-  // },
-
   formatDate: function(unixTimestamp) {
     return Moment.unix(unixTimestamp).format("ddd, MMM Do");
   },

@@ -4,6 +4,10 @@ var Dispatcher = require('../dispatcher/dispatcher');
 var TidesApi = require('../utils/tides-api');
 
 module.exports = {
+  // denyGeolocation: function() {
+
+  // },
+
   getNextPrediction: function() {
     Dispatcher.handleViewAction({
       type: ActionTypes.GET_NEXT_PREDICTION
@@ -16,8 +20,12 @@ module.exports = {
     });
   },
 
-  requestTidePredictions: function(zip) {
-    TidesApi.requestTidePredictions(zip);
+  requestTidePredictionsByZip: function(zip) {
+    TidesApi.requestTidePredictionsByZip(zip);
+  },
+
+  requestTidePredictionsByGeolocation: function() {
+    TidesApi.requestTidePredictionsByGeolocation();
   },
 
   receiveTidePredictions: function(predictions) {

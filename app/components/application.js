@@ -3,11 +3,11 @@ var React = require('react');
 var ActionCreators = require('../actions/action-creators');
 var NavigationMenu = require('./navigation-menu');
 var PredictionsList = require('./predictions-list');
+var ZipInput = require('./zip-modal');
 
 var Application = React.createClass({
-
   componentWillMount: function() {
-    ActionCreators.requestTidePredictions(95060);
+    ActionCreators.requestTidePredictionsByGeolocation();
   },
 
   render: function() {
@@ -16,6 +16,7 @@ var Application = React.createClass({
         <h1>ebb ~ flow</h1>
         <PredictionsList/>
         <NavigationMenu/>
+        <ZipInput/>
       </div>
     );
   }
