@@ -58,3 +58,8 @@ h1 {
 .navigation-menu button:first-child {
   margin-right: 1em;
 }
+
+.btn.disabled {
+  cursor: default;
+  pointer-events: none;
+}
