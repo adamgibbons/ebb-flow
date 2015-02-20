@@ -5,6 +5,7 @@ var NavigationMenu = require('./navigation-menu');
 var PredictionsList = require('./predictions-list');
 
 var Application = React.createClass({
+
   componentWillMount: function() {
     ActionCreators.requestTidePredictions(95060);
   },

@@ -9,6 +9,45 @@ var NavigationMenu = React.createClass({
 
   mixins: [ListenToStore],
 
+  componentDidMount: function() {
+    var self = this;
+
+    document.addEventListener('keydown', function(e) {
+
+      switch (e.which) {
+        case 37:
+          // 37: left
+          self.handleLeftClick();
+          break;
+
+        case 39:
+          // 39: right
+          self.handleRightClick();
+          break;
+
+        default:
+          // do nothing
+          break;
+      }
+    });
+  },
+
+  componentWillUnmount: function() {
+    document.removeEventListener('keydown');
+  },
+
+  handleLeftClick: function() {
+    if (!this.isFirstPrediction()) {
+      ActionCreators.getPreviousPrediction();
+    }
+  },
+
+  handleRightClick: function() {
+    if (!this.isLastPrediction()) {
+      ActionCreators.getNextPrediction();
+    }
+  },
+
   getInitialState: function() {
     return {
       predictionIndex: 0,
