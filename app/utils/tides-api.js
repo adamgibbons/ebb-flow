@@ -36,23 +36,6 @@ function _formatGeoposition(geoposition) {
   return coords;
 }
 
-function _handleFailedGeolocationQuery(err) {
-
-  console.log(err);
-  // PositionError {message: "User denied Geolocation", code: 1, PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3}
-  // PositionError
-  // code: 1
-  // message: "User denied Geolocation"
-
-  // then query user for zip code
-
-  if (err && err.code === 1) {
-    // User denied geolocation
-    console.log("user denied geolocation");
-    // ActionCreators.denyGeolocation();
-  }
-}
-
 function _requestTidePredictionsByZip(zip) {
   var url = _formatZipUrl(zip);
 
@@ -73,8 +56,7 @@ function _requestTidePredictionsByZip(zip) {
 function _requestTidePredictionsByGeolocation() {
   getGeolocation(function(err, geoposition) {
     if (err) {
-      console.log("here");
-      return _handleFailedGeolocationQuery(err);
+      return require('../actions/action-creators').denyGeolocation();
     }
 
     var coordinates = _formatGeoposition(geoposition);

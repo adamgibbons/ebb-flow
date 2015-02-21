@@ -1,12 +1,25 @@
-var React = require('react');
+var React = require('react/addons');
 var ActionCreators = require('../actions/action-creators');
+var ApplicationStore = require('../stores/application-store');
+var ListenToStore = require('../utils/listen-to-store');
 
 var ZipInput = React.createClass({
 
+  mixins: [ListenToStore],
+
+  stores: [ApplicationStore],
+
   getInitialState: function() {
     return {
-      zip: ''
+      zip: '',
+      isVisible: false
     };
+  },
+
+  getStateFromStore: function() {
+    this.setState({
+      isVisible: ApplicationStore.usingZip()
+    });
   },
 
   handleTextInput: function() {
@@ -20,10 +33,14 @@ var ZipInput = React.createClass({
   },
 
   render: function() {
+    var classes = React.addons.classSet({
+      'visible': this.state.isVisible
+    });
+
     return (
-      <div className="zip-input">
+      <div className={classes} id="zip-input">
         <label>Zip code</label>
-        <input type="text" name="zip" onChange={this.handleTextInput} ref='zip-input'/>
+        <input type="text" name="zip" onChange={this.handleTextInput} ref='zipInput'/>
         <button onClick={this.handleClick}>Go</button>
       </div>
     );

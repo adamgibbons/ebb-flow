@@ -8,6 +8,14 @@ var _predictionIndex = 0;
 var _predictions = [];
 var _loaded = false;
 
+var _useGeolocation = true;
+var _useZip = false;
+
+function _denyGeolocation() {
+  _useGeolocation = false;
+  _useZip = true;
+}
+
 function _loadPredictions(predictions) {
   _predictions = predictions;
   _loaded = true;
@@ -32,7 +40,16 @@ var ApplicationStore = createStore({
 
   isLoaded: function() {
     return _loaded;
+  },
+
+  usingGeolocation: function() {
+    return _useGeolocation;
+  },
+
+  usingZip: function() {
+    return _useZip;
   }
+
 });
 
 ApplicationStore.dispatchToken = Dispatcher.register(function (payload) {
@@ -53,6 +70,14 @@ ApplicationStore.dispatchToken = Dispatcher.register(function (payload) {
       _loadPredictions(action.predictions);
       ApplicationStore.emitChange();
       break;
+
+    case ActionTypes.DENY_GEOLOCATION:
+      _denyGeolocation();
+      ApplicationStore.emitChange();
+      break;
+
+    // case ActionTypes.SUBMIT_ZIP_CODE:
+    //   _show
 
     default:
       // do nothing

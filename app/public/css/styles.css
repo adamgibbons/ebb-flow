@@ -63,3 +63,11 @@ h1 {
   cursor: default;
   pointer-events: none;
 }
+
+#zip-input {
+  display: none;
+}
+
+#zip-input.visible {
+  display: block;
+}

@@ -4,9 +4,11 @@ var Dispatcher = require('../dispatcher/dispatcher');
 var TidesApi = require('../utils/tides-api');
 
 module.exports = {
-  // denyGeolocation: function() {
-
-  // },
+  denyGeolocation: function() {
+    Dispatcher.handleViewAction({
+      type: ActionTypes.DENY_GEOLOCATION
+    });
+  },
 
   getNextPrediction: function() {
     Dispatcher.handleViewAction({
