@@ -2,7 +2,7 @@ var React = require('react/addons');
 
 var Tide = React.createClass({
   formatType: function(type) {
-    return type === 'h' ? 'high tide' : 'low tide';
+    return type === 'h' ? '⤴ high' : '⤵ low';
   },
 
   render: function() {

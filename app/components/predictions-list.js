@@ -44,7 +44,11 @@ var PeriodsList = React.createClass({
         );
       });
 
-      return <div className="prediction-list">{periods}</div>;
+      return (
+        <div className="periods">
+          {periods}
+        </div>
+      );
 
     } else {
 

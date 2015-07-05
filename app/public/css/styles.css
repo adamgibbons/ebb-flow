@@ -1,51 +1,74 @@
-body {
-  background-color: #999;
+/*clouds #ecf0f1*/
+/*light blue #3498db;*/
+/*dark blue #2980b9;*/
+
+html, body, #app-root {
+  background-color: #3498db;
+  color: #ecf0f1;
   text-align: center;
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
   font-size: 24px;
   font-family: 'helvetica neue', sans-serif;
+  font-weight: 100;
+  line-height: 1.33em;
+  text-transform: lowercase;
 }
 
-#app-root {
+.header {
+  font-size: 1em;
+  padding: .1em 0 1.5em;
+  color: #ddd;
+}
+
+.header-location, .header-title {
   margin: 0;
   padding: 0;
-  height: 100%;
+  font-size: inherit;
+  width: 49%;
+}
+
+.header-location {
+  float: left;
+  text-align: left;
+}
+
+.header-title {
+  float: right;
+  text-align: right;
+  font-weight: 500;
 }
 
 .app-wrapper {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+  padding: 3px;
 }
+
+.periods {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+  clear: both;
+}
+
+.period {
+  flex: 1 0 auto;
+  min-width: 7em;
+  background-color: #2980b9;
+  padding: 1em 0;
+  margin: 1px;
+}
+
+/*.period.active {
+  color: red;
+  flex: 8 0 auto;
+}*/
 
 h1 {
   margin: 1em 0;
-}
-
-.prediction-list {
-  margin: auto;
-  line-height: 1.33em;
-}
-
-.prediction {
-  display: none;
-}
-
-.prediction.active {
-  display: block;
-}
-
-.prediction-component {
-
-}
-
-.prediction-component.tide {
-
-}
-
-.prediction-component.timestamp {
-
 }
 
 .btn {
@@ -53,6 +76,10 @@ h1 {
   padding: .5em;
   border: 1px solid #666;
   cursor: pointer;
+}
+
+.navigation-menu {
+  display: none;
 }
 
 .navigation-menu button:first-child {
@@ -64,10 +91,17 @@ h1 {
   pointer-events: none;
 }
 
-#zip-input {
-  display: none;
-}
-
 #zip-input.visible {
   display: block;
+}
+
+
+div, p {
+  color: inherit;
+}
+
+
+p {
+  margin: 0;
+  padding: 0;
 }

@@ -4,11 +4,9 @@ var Timestamp = require('./timestamp');
 var Tide = require('./tide');
 
 var Period = React.createClass({
-  getStateFromStore: function() {},
-
   render: function() {
     var classes = React.addons.classSet({
-      'prediction': true,
+      'period': true,
       'active': this.props.isActive
     });
 

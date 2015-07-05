@@ -13,7 +13,10 @@ var Application = React.createClass({
   render: function() {
     return (
       <div className="app-wrapper">
-        <h1>ebb ~ flow</h1>
+        <header className="header">
+          <div className="header-location">tide chart ⌖ santa cruz,monterey bay, CA</div>
+          <div className="header-title">ebb ≊ flow</div>
+        </header>
         <PredictionsList/>
         <NavigationMenu/>
         <ZipInput/>
